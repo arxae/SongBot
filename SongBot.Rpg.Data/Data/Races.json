@@ -1,0 +1,22 @@
+[
+	{
+		"RaceName": "Human",
+		"IsPlayable": true
+	},
+	{
+		"RaceName": "Asura",
+		"IsPlayable": true
+	},
+	{
+		"RaceName": "Ratfolk",
+		"IsPlayable": true
+	},
+	{
+		"RaceName": "Orc",
+		"IsPlayable": true
+	},
+	{
+		"RaceName": "Dwarf",
+		"IsPlayable": true
+	}
+]

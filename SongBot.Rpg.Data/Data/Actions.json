@@ -1,0 +1,14 @@
+[
+	{
+		"ActionName": "Idle",
+		"TicksNeeded": -1 ,
+		"IsInterruptable": true 
+	},
+	{
+		"ActionName": "Travel",
+		"DisplayName": "Traveling",
+		"TicksNeeded": 3,
+		"IsInterruptable": true,
+		"InterruptionTickCost": 1
+	}
+]

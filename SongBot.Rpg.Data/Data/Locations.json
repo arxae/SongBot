@@ -1,0 +1,14 @@
+[
+	{
+		"LocationId": "SongHq",
+		"DisplayName": "SONG HQ",
+		"Description": "Our trusty home",
+		"LocationLinks": [ "Firelink" ]
+	},
+	{
+		"LocationId": "Firelink",
+		"DisplayName": "Firelink",
+		"Description": "A dusty road that leads to the settlement of Firelink",
+		"LocationLinks": [ "SongHq" ]
+	}
+]

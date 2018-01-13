@@ -1,0 +1,18 @@
+[
+	{
+		"ClassName": "Warrior",
+		"IsStarter": true
+	},
+	{
+		"ClassName": "Rogue",
+		"IsStarter": true
+	},
+	{
+		"ClassName": "Mage",
+		"IsStarter": true
+	},
+	{
+		"ClassName": "Priest",
+		"IsStarter": true
+	}
+]
