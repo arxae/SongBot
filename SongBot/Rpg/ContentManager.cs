@@ -75,8 +75,8 @@
 			sw.Stop();
 			Console.WriteLine($"...Done in {sw.Elapsed}.");
 		}
-
-		public static STSdb4.Database.IStorageEngine GetDb() => STSdb4.Database.STSdb.FromFile(DB_NAME);
+		
+		public static LiteDB.LiteDatabase GetDb() => new LiteDB.LiteDatabase(DB_NAME);
 
 		public enum RpgAction
 		{

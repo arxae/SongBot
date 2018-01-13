@@ -5,7 +5,6 @@
 	using DSharpPlus;
 	using DSharpPlus.CommandsNext;
 	using DSharpPlus.Entities;
-	using STSdb4.Database;
 
 	using Rpg;
 
@@ -37,6 +36,6 @@
 		}
 
 		public static string GetFullUsername(this DiscordUser user) => $"{user.Username}#{user.Discriminator}";
-		public static ITable<ulong, Player> GetPlayerTable(this IStorageEngine engine) => engine.OpenXTable<ulong, Player>(ContentManager.DB_PLAYER_TABLE);
+		public static LiteDB.LiteCollection<Player> GetPlayerTable(this LiteDB.LiteDatabase db) => db.GetCollection<Player>(ContentManager.DB_PLAYER_TABLE);
 	}
 }

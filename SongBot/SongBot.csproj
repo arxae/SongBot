@@ -43,6 +43,9 @@
     <Reference Include="DSharpPlus.Interactivity, Version=4.0.0.401, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DSharpPlus.Interactivity.4.0.0-beta-00401\lib\net46\DSharpPlus.Interactivity.dll</HintPath>
     </Reference>
+    <Reference Include="LiteDB, Version=4.1.1.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiteDB.4.1.1\lib\net40\LiteDB.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Emzi0767.Microsoft.DependencyInjection.2.0.0\lib\net46\Microsoft.Extensions.DependencyInjection.dll</HintPath>
     </Reference>
@@ -51,9 +54,6 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="STSdb4, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\STSdb.4.0.0\lib\STSdb4.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />

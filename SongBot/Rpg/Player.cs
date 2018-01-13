@@ -32,14 +32,21 @@
 			CurrentAction = newAction;
 			ActionTarget = actionTarget;
 
-			int newCost = nextAction.TicksNeeded;
-
-			if (nextAction.InterruptionTickCost > 0)
+			if (newAction == ContentManager.RpgAction.Idle)
 			{
-				newCost = newCost + nextAction.InterruptionTickCost;
+				ActionTicksRemaining = -1;
 			}
+			else
+			{
+				int newCost = nextAction.TicksNeeded;
 
-			ActionTicksRemaining = newCost;
+				if (nextAction.InterruptionTickCost > 0)
+				{
+					newCost = newCost + nextAction.InterruptionTickCost;
+				}
+
+				ActionTicksRemaining = newCost;
+			}
 
 			return ContentManager.RpgActionResult.Done;
 		}

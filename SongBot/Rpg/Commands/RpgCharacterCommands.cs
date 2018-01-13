@@ -14,7 +14,7 @@
 		public async Task RegisterNewCharacter(CommandContext c, string raceName, string className)
 		{
 			c.LogDebug($"New character requested for {c.User.GetFullUsername()} ({raceName} | {className})");
-				await c.Channel.DeleteMessageAsync(c.Message);
+			await c.Channel.DeleteMessageAsync(c.Message);
 
 			if (ContentManager.Races.ContainsKey(raceName) == false)
 			{
@@ -48,17 +48,18 @@
 			using (var db = ContentManager.GetDb())
 			{
 				var players = db.GetPlayerTable();
-				if (players.Exists(player.DiscordId))
+				if (players.Exists(p => p.DiscordId == player.DiscordId))
 				{
-					await c.Channel.DeleteMessageAsync(c.Message);
-					await c.RespondWithDmAsync("You already have a registered character");
+					await c.Message.DeleteAsync();
+					await c.RespondWithDmAsync("You already have registered a character. You can remove it by using the \"rpgchar unregister\" command");
+					c.LogDebug($"{c.User.GetFullUsername()} already registered a character");
 					return;
 				}
 
-				players[player.DiscordId] = player;
-				db.Commit();
+				players.Insert(player.DiscordId, player);
+				c.LogDebug($"Registered new player for {c.User.GetFullUsername()} ({player.DiscordId})");
 			}
-			
+
 			await c.RespondAsync($"{player.Race} {player.Class} {c.User.Mention} has joined the realm!");
 		}
 
@@ -72,14 +73,13 @@
 			{
 				var players = db.GetPlayerTable();
 
-				if (players.Exists(c.User.Id) == false)
+				if (players.Exists(p => p.DiscordId == c.User.Id) == false)
 				{
 					await c.Channel.DeleteMessageAsync(c.Message);
 					return;
 				}
 
-				players.Delete(c.User.Id);
-				db.Commit();
+				players.Delete(p => p.DiscordId == c.User.Id);
 			}
 
 			await c.RespondWithDmAsync("You are no longer part of the realm");

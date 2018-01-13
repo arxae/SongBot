@@ -8,7 +8,6 @@
 		"ActionName": "Travel",
 		"DisplayName": "Traveling",
 		"TicksNeeded": 3,
-		"IsInterruptable": true,
-		"InterruptionTickCost": 1
+		"IsInterruptable": true
 	}
 ]

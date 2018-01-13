@@ -22,9 +22,9 @@ namespace SongBot.Rpg.Commands
 			using (var db = ContentManager.GetDb())
 			{
 				var players = db.GetPlayerTable();
-				if (players.Exists(c.User.Id) == false) return;
+				if (players.Exists(p => p.DiscordId == c.User.Id) == false) return;
 
-				var player = players[c.User.Id];
+				var player = players.FindOne(p => p.DiscordId == c.User.Id);
 				var locEmbed = ContentManager.Locations[player.CurrentLocation].GetLocationEmbed();
 				await c.RespondWithDmAsync(embed: locEmbed);
 			}
@@ -36,9 +36,9 @@ namespace SongBot.Rpg.Commands
 			using (var db = ContentManager.GetDb())
 			{
 				var players = db.GetPlayerTable();
-				if (players.Exists(c.User.Id) == false) return;
+				if (players.Exists(p => p.DiscordId == c.User.Id) == false) return;
 
-				var player = players[c.User.Id];
+				var player = players.FindOne(p => p.DiscordId == c.User.Id);
 				var currLoc = ContentManager.Locations[player.CurrentLocation];
 
 				if (currLoc.LocationLinks.Contains(destination, StringComparer.OrdinalIgnoreCase))
@@ -47,7 +47,10 @@ namespace SongBot.Rpg.Commands
 					{
 						await c.RespondWithDmAsync("Your current action cannot be interrupted");
 						await c.Message.DeleteAsync();
+						return;
 					}
+
+					players.Update(player.DiscordId, player);
 				}
 			}
 		}

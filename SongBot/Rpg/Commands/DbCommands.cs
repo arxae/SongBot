@@ -22,13 +22,15 @@ namespace SongBot.Rpg.Commands
 			{
 				var players = db.GetPlayerTable();
 
-				if (players.Exists(user.Id) == false)
+				if (players.Exists(p => p.DiscordId == user.Id) == false)
 				{
 					await c.RespondWithDmAsync("User not found");
 					return;
 				}
 
-				var json = Newtonsoft.Json.JsonConvert.SerializeObject(players[user.Id], Newtonsoft.Json.Formatting.Indented);
+				var player = players.FindOne(p => p.DiscordId == user.Id);
+
+				var json = Newtonsoft.Json.JsonConvert.SerializeObject(player, Newtonsoft.Json.Formatting.Indented);
 				await c.RespondWithDmAsync(json);
 			}
 		}
@@ -49,13 +51,15 @@ namespace SongBot.Rpg.Commands
 
 				var players = db.GetPlayerTable();
 
-				if (players.Exists(id) == false)
+				if (players.Exists(p => p.DiscordId == id) == false)
 				{
 					await c.RespondWithDmAsync($"Player id {id} not found");
 					return;
 				}
 
-				var json = Newtonsoft.Json.JsonConvert.SerializeObject(players[id], Newtonsoft.Json.Formatting.Indented);
+				var player = players.FindOne(p => p.DiscordId == id);
+
+				var json = Newtonsoft.Json.JsonConvert.SerializeObject(player, Newtonsoft.Json.Formatting.Indented);
 				await c.RespondWithDmAsync(json);
 			}
 		}
@@ -70,13 +74,14 @@ namespace SongBot.Rpg.Commands
 			{
 				var players = db.GetPlayerTable();
 
-				if (players.Exists(user.Id) == false)
+				if (players.Exists(p => p.DiscordId == user.Id) == false)
 				{
 					await c.RespondWithDmAsync("User not found");
 					return;
 				}
 
-				players.Delete(user.Id);
+				players.Delete(p => p.DiscordId == user.Id);
+
 				c.LogWarning($"Player {user.GetFullUsername()}({user.Id}) has been deleted by {c.User.GetFullUsername()}");
 
 				await c.RespondWithDmAsync($"User {user.GetFullUsername()} ({user.Id}) has been deleted");
@@ -97,9 +102,9 @@ namespace SongBot.Rpg.Commands
 			{
 				var players = db.GetPlayerTable();
 
-				foreach (var p in players)
+				foreach (var p in players.FindAll())
 				{
-					var user = await c.Guild.GetMemberAsync(p.Key);
+					var user = await c.Guild.GetMemberAsync(p.DiscordId);
 					sb.Append($"{user.Id} - {user.GetFullUsername()}");
 				}
 			}
