@@ -1,5 +1,8 @@
-﻿namespace SongBot
+﻿using System;
+
+namespace SongBot
 {
+	using System.Linq;
 	using System.Timers;
 	using System.Threading.Tasks;
 
@@ -17,11 +20,13 @@
 		{
 			client = new DiscordClient(new DiscordConfiguration
 			{
-				Token = System.Environment.GetEnvironmentVariable("SONGBOT_KEY", System.EnvironmentVariableTarget.User),
+				Token = Environment.GetEnvironmentVariable("SONGBOT_KEY", EnvironmentVariableTarget.User),
 				TokenType = TokenType.Bot,
-				UseInternalLogHandler = true,
-				LogLevel = LogLevel.Debug
+				LogLevel = LogLevel.Debug,
 			});
+
+			client.DebugLogger.LogMessageReceived += DebugLogger_LogMessageReceived;
+			client.GuildAvailable += Client_GuildAvailable;
 
 			var commands = client.UseCommandsNext(new CommandsNextConfiguration()
 			{
@@ -32,9 +37,35 @@
 			client.UseInteractivity(new InteractivityConfiguration());
 			commands.RegisterCommands(System.Reflection.Assembly.GetExecutingAssembly());
 
-			var tickTimer = new Timer(5000);
+			var tickTimer = new Timer(60000);
 			tickTimer.Elapsed += TickTimer_ElapsedAsync;
 			tickTimer.Start();
+		}
+
+		private Task Client_GuildAvailable(DSharpPlus.EventArgs.GuildCreateEventArgs e)
+		{
+			return Task.Run(() =>
+			{
+				if (e.Guild.Id != ContentManager.Config.SongDiscordGuildId) return;
+
+				var rpgChannel = e.Guild.Channels.FirstOrDefault(c => c.Name == ContentManager.Config.RpgChannel);
+				ContentManager.RpgChannel = rpgChannel ?? throw new ArgumentException("Could not find the RPG channel");
+			});
+		}
+
+		void DebugLogger_LogMessageReceived(object sender, DSharpPlus.EventArgs.DebugLogMessageEventArgs e)
+		{
+			var l = Serilog.Log.ForContext("SourceContext", e.Application);
+
+			switch (e.Level)
+			{
+				case LogLevel.Debug: l.Debug(e.Message); break;
+				case LogLevel.Info: l.Information(e.Message); break;
+				case LogLevel.Warning: l.Warning(e.Message); break;
+				case LogLevel.Error: l.Error(e.Message); break;
+				case LogLevel.Critical: l.Fatal(e.Message); break;
+				default: throw new ArgumentOutOfRangeException();
+			}
 		}
 
 		public async Task StartBotAsync()
@@ -45,7 +76,7 @@
 
 		async void TickTimer_ElapsedAsync(object sender, ElapsedEventArgs e)
 		{
-			client.DebugLogger.LogMessage(LogLevel.Debug, nameof(Bot), "Processing timer tick", System.DateTime.Now);
+			client.DebugLogger.LogMessage(LogLevel.Debug, nameof(Bot), "Processing timer tick", DateTime.Now);
 
 			using (var db = ContentManager.GetDb())
 			{
@@ -68,9 +99,10 @@
 					if (p.ActionTicksRemaining <= 0)
 					{
 						client.DebugLogger.LogMessage(LogLevel.Debug, nameof(Bot),
-							$"{p.DiscordId} is done with action \"{p.CurrentAction}\"", System.DateTime.Now);
+							$"{p.DiscordId} is done with action \"{p.CurrentAction}\"", DateTime.Now);
 
 						// Execute action
+						p.ExecuteCurrentAction();
 
 						// Set back to idle
 						p.SetAction(ContentManager.RpgAction.Idle, null);

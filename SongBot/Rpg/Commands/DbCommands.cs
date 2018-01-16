@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Converters;
-
-namespace SongBot.Rpg.Commands
+﻿namespace SongBot.Rpg.Commands
 {
 	using System.Threading.Tasks;
 
@@ -15,7 +13,7 @@ namespace SongBot.Rpg.Commands
 		[Command("getplayerinfo"), Description("Gets playerinformation")]
 		public async Task DbGetPlayerInfo(CommandContext c, DiscordUser user)
 		{
-			c.LogDebug($"Received \"db getplayerinfo\" command from {c.User.GetFullUsername()}");
+			c.LogDebug($"{c.User.GetFullUsername()} -> {nameof(DbGetPlayerInfo)}");
 			await c.Channel.DeleteMessageAsync(c.Message);
 
 			using (var db = ContentManager.GetDb())
@@ -38,7 +36,7 @@ namespace SongBot.Rpg.Commands
 		[Command("getplayerinfobyid"), Description("Get player information by player id")]
 		public async Task DbGetPlayerInfoById(CommandContext c, string dId)
 		{
-			c.LogDebug($"Received \"db getplayerinfobyid\" command from {c.User.GetFullUsername()}");
+			c.LogDebug($"{c.User.GetFullUsername()} -> {nameof(DbGetPlayerInfoById)}");
 			await c.Channel.DeleteMessageAsync(c.Message);
 
 			using (var db = ContentManager.GetDb())
@@ -67,7 +65,7 @@ namespace SongBot.Rpg.Commands
 		[Command("deleteplayer"), Description("Remove a player")]
 		public async Task DbRemovePlayer(CommandContext c, DiscordUser user)
 		{
-			c.LogDebug($"Received \"db deleteplayer\" command from {c.User.GetFullUsername()}");
+			c.LogDebug($"{c.User.GetFullUsername()} -> {nameof(DbRemovePlayer)}");
 			await c.Channel.DeleteMessageAsync(c.Message);
 
 			using (var db = ContentManager.GetDb())
@@ -91,7 +89,7 @@ namespace SongBot.Rpg.Commands
 		[Command("getplayers"), Description("Get all players")]
 		public async Task DbGetPlayers(CommandContext c)
 		{
-			c.LogDebug($"Received \"db getplayers\" command from {c.User.GetFullUsername()}");
+			c.LogDebug($"{c.User.GetFullUsername()} -> {nameof(DbGetPlayers)}");
 			await c.Channel.DeleteMessageAsync(c.Message);
 
 			var sb = new System.Text.StringBuilder();

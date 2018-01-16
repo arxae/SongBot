@@ -1,4 +1,7 @@
 {
 	"StartingLocation": "SongHq",
-	"SongDiscordGuildId": 397948435162071040
+	"StartingClass": "Novice",
+	"SongDiscordGuildId": 397948435162071040,
+	"RpgChannel": "rpg",
+	"NeverDmResults": false
 }

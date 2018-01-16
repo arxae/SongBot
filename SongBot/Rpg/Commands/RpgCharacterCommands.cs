@@ -6,83 +6,61 @@
 	using DSharpPlus.CommandsNext;
 	using DSharpPlus.CommandsNext.Attributes;
 
-	[Group("rpgchar")]
+	[Group("rpg")]
 	[Description("RPG Commands")]
 	public class RpgCharacterCommands
 	{
 		[Command("register"), Description("Register yourself as a new character")]
-		public async Task RegisterNewCharacter(CommandContext c, string raceName, string className)
+		public async Task RegisterNewCharacter(CommandContext c, string raceName)
 		{
-			c.LogDebug($"New character requested for {c.User.GetFullUsername()} ({raceName} | {className})");
-			await c.Channel.DeleteMessageAsync(c.Message);
+			c.LogDebug($"Character registration received from {c.User.GetFullUsername()} (race: {raceName})");
+			
+			if (await c.RpgChannelGuard() == false) return;
 
 			if (ContentManager.Races.ContainsKey(raceName) == false)
 			{
-				c.LogDebug($"{c.User.GetFullUsername()} used a wrong race ({raceName})");
-				var validRaces = string.Join(", ", ContentManager.Races
-					.Where(rce => rce.Value.IsPlayable)
-					.Select(rce => rce.Key)
-					.ToList());
-				await c.RespondWithDmAsync($"{raceName} is not a valid race. Valid choices: {validRaces}");
-				return;
+				var validRaces = string.Join(", ", ContentManager.Races.Select(r => r.Value.RaceName));
+				await c.RespondAsync(
+					$":warning: {c.User.Mention}: \"{raceName}\" is not a valid race. Valid races are: {validRaces}");
+				await c.Message.DeleteAsync();
 			}
-
-			if (ContentManager.Classes.ContainsKey(className) == false)
-			{
-				c.LogDebug($"{c.User.GetFullUsername()} used a wrong class ({className})");
-				var validClasses = string.Join(", ", ContentManager.Classes
-					.Where(cls => cls.Value.IsStarter)
-					.Select(cls => cls.Key)
-					.ToList());
-				await c.RespondWithDmAsync($"{className} is not a valid class. Valid choices: {validClasses}");
-				return;
-			}
-
-			var player = new Player
-			{
-				DiscordId = c.User.Id,
-				Race = ContentManager.Races[raceName].RaceName,
-				Class = ContentManager.Classes[className].ClassName
-			};
 
 			using (var db = ContentManager.GetDb())
 			{
 				var players = db.GetPlayerTable();
-				if (players.Exists(p => p.DiscordId == player.DiscordId))
-				{
-					await c.Message.DeleteAsync();
-					await c.RespondWithDmAsync("You already have registered a character. You can remove it by using the \"rpgchar unregister\" command");
-					c.LogDebug($"{c.User.GetFullUsername()} already registered a character");
-					return;
-				}
-
+				var player = new Player(c.User.Id, raceName, ContentManager.Config.StartingClass);
 				players.Insert(player.DiscordId, player);
-				c.LogDebug($"Registered new player for {c.User.GetFullUsername()} ({player.DiscordId})");
+				c.LogDebug($"Added player character for {c.User.GetFullUsername()} ({c.User.Id})");
 			}
 
-			await c.RespondAsync($"{player.Race} {player.Class} {c.User.Mention} has joined the realm!");
+			await c.RespondAsync($"{ContentManager.Config.StartingClass} {c.User.Mention} has joined the adventure!");
+			await c.ConfirmMessage();
+
+			c.LogDebug($"Character registration completed for {c.User.GetFullUsername()}");
 		}
 
-		[Command("unregister"), Description("Unregister your character")]
-		public async Task UnregisterCharacter(CommandContext c)
+		[Command("delete"), Description("Unregister your character")]
+		public async Task DeleteCharacter(CommandContext c)
 		{
-			c.LogDebug($"Received \"rpg unregister\" from {c.User.GetFullUsername()}");
+			c.LogDebug($"{c.User.GetFullUsername()} -> {nameof(DeleteCharacter)}");
 
-			await c.Channel.DeleteMessageAsync(c.Message);
+			if (await c.RpgChannelGuard() == false) return;
+
 			using (var db = ContentManager.GetDb())
 			{
 				var players = db.GetPlayerTable();
 
 				if (players.Exists(p => p.DiscordId == c.User.Id) == false)
 				{
-					await c.Channel.DeleteMessageAsync(c.Message);
+					await c.RejectMessage();
 					return;
 				}
 
 				players.Delete(p => p.DiscordId == c.User.Id);
 			}
 
-			await c.RespondWithDmAsync("You are no longer part of the realm");
+			await c.ConfirmMessage();
+			await c.RespondAsync($"{c.User.Mention} has left the adventure! {ContentManager.EMOJI_FACE_SAD}");
 		}
 	}
 }

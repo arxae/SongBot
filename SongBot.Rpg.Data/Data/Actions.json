@@ -7,7 +7,7 @@
 	{
 		"ActionName": "Travel",
 		"DisplayName": "Traveling",
-		"TicksNeeded": 3,
+		"TicksNeeded": 0,
 		"IsInterruptable": true
 	}
 ]

@@ -16,12 +16,16 @@
 		public const string EMOJI_GREEN_CHECK = ":white_check_mark:";
 		public const string EMOJI_BLACK_CHECK = ":heavy_check_mark:";
 		public const string EMOJI_BLACK_CROSS = ":heavy_multiplication_x:";
+		public const string EMOJI_RED_CROSS = ":x:";
+		public const string EMOJI_FACE_HAPPY = ":smile:";
+		public const string EMOJI_FACE_SAD = ":frowning:";
 
 		public static Dictionary<string, Race> Races { get; private set; }
 		public static Dictionary<string, CharClass> Classes { get; private set; }
 		public static Dictionary<string, Location> Locations { get; private set; }
 		public static Dictionary<RpgAction, RpgActionDef> Actions { get; private set; }
 		public static GameConfig Config { get; private set; }
+		public static DSharpPlus.Entities.DiscordChannel RpgChannel { get; set; }
 
 		public static void Initialize()
 		{
@@ -32,7 +36,7 @@
 			// ----- Config
 			var configJson = File.ReadAllText("Data/Config.json");
 			Config = _JSON.DeserializeObject<GameConfig>(configJson);
-			Console.Write($"...Config");
+			Console.Write("...Config");
 
 			// ----- Actions
 			Actions = new Dictionary<RpgAction, RpgActionDef>();
@@ -85,7 +89,7 @@
 
 		public enum RpgActionResult
 		{
-			Done, CannotInterrupt
+			Done, DoneInstant, CannotInterrupt
 		}
 	}
 }

@@ -1,5 +1,9 @@
 [
 	{
+		"ClassName": "Novice",
+		"IsStarter": true
+	},
+	{
 		"ClassName": "Warrior",
 		"IsStarter": true
 	},

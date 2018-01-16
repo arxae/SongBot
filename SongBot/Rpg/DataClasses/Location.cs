@@ -9,21 +9,23 @@
 		public string LocationId { get; set; }
 		public string DisplayName { get; set; }
 		public string Description { get; set; }
-		public List<string> LocationLinks { get; set; }
+		public List<string> LocationConnections { get; set; }
+		public List<string> Services { get; set; }
 
 		public DiscordEmbed GetLocationEmbed()
 		{
-			var builder = new DiscordEmbedBuilder();
+			var builder = new DiscordEmbedBuilder()
+				.WithTitle(DisplayName)
+				.WithDescription(Description);
 
-			builder.WithTitle(DisplayName);
+			// Services
+			if (Services.Count > 0)
+			{
+				builder.AddField("Services", string.Join(", ", Services), true);
+			}
 
-			var sb = new System.Text.StringBuilder();
-			sb.AppendLine(Description);
-			sb.AppendLine(System.Environment.NewLine);
-			sb.Append("**Exits:** ");
-			sb.AppendLine(string.Join(", ", LocationLinks));
-
-			builder.WithDescription(sb.ToString());
+			// Exits
+			builder.AddField("Exits", string.Join(", ", LocationConnections), true);
 
 			return builder.Build();
 		}
