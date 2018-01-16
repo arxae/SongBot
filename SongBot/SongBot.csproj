@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionProcessor.cs" />
     <Compile Include="Bot.cs" />
     <Compile Include="BotControlCommands.cs" />
     <Compile Include="Rpg\Commands\DbCommands.cs" />
@@ -91,6 +92,9 @@
     <Compile Include="Rpg\DataClasses\GameConfig.cs" />
     <Compile Include="Rpg\DataClasses\Location.cs" />
     <Compile Include="Rpg\DataClasses\Race.cs" />
+    <Compile Include="Rpg\DataClasses\ServiceLocation.cs" />
+    <Compile Include="Rpg\DataClasses\ServiceLocationAction.cs" />
+    <Compile Include="Rpg\LocationServices\InnService.cs" />
     <Compile Include="Rpg\Player.cs" />
   </ItemGroup>
   <ItemGroup>

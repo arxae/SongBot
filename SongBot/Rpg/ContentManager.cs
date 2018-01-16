@@ -20,12 +20,14 @@
 		public const string EMOJI_FACE_HAPPY = ":smile:";
 		public const string EMOJI_FACE_SAD = ":frowning:";
 
+		public static GameConfig Config { get; private set; }
+		public static DSharpPlus.Entities.DiscordChannel RpgChannel { get; set; }
+
 		public static Dictionary<string, Race> Races { get; private set; }
 		public static Dictionary<string, CharClass> Classes { get; private set; }
 		public static Dictionary<string, Location> Locations { get; private set; }
 		public static Dictionary<RpgAction, RpgActionDef> Actions { get; private set; }
-		public static GameConfig Config { get; private set; }
-		public static DSharpPlus.Entities.DiscordChannel RpgChannel { get; set; }
+		public static Dictionary<string, ServiceLocationAction> ServiceLocationActions { get; private set; }
 
 		public static void Initialize()
 		{
@@ -55,6 +57,11 @@
 			}
 			Console.Write($"...Actions({_actions.Count})");
 
+			// ----- ServiceLocationActions
+			var slaJson = File.ReadAllText("Data/ServiceLocationActions.json");
+			ServiceLocationActions = _JSON.DeserializeObject<Dictionary<string, ServiceLocationAction>>(slaJson);
+			Console.Write($"...SLAs({ServiceLocationActions.Count})");
+
 			// ----- Races
 			Races = new Dictionary<string, Race>(StringComparer.OrdinalIgnoreCase);
 			var racesJson = File.ReadAllText("Data/Races.json");
@@ -79,7 +86,7 @@
 			sw.Stop();
 			Console.WriteLine($"...Done in {sw.Elapsed}.");
 		}
-		
+
 		public static LiteDB.LiteDatabase GetDb() => new LiteDB.LiteDatabase(DB_NAME);
 
 		public enum RpgAction

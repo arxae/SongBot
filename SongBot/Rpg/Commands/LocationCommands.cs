@@ -99,37 +99,9 @@ namespace SongBot.Rpg.Commands
 
 				var loc = ContentManager.Locations[player.CurrentLocation];
 
-				if (loc.Services.Contains(serviceName) == false) return;
+				if (loc.Services.ContainsKey(serviceName) == false) return;
 
-				var desc = new System.Text.StringBuilder();
-				desc.AppendLine("A cozy looking inn, you could get some beer and shit");
-				desc.AppendLine(":beer: Drink a beer");
-				desc.AppendLine(":beers: Buy a beer for everyone currently here");
-				desc.AppendLine(":bed: Take a rest for the night");
-
-				var embed = new DiscordEmbedBuilder()
-					.WithColor(DiscordColor.Blurple)
-					.WithTitle("Inn")
-					.WithDescription(desc.ToString());
-
-				var msg = await c.RespondAsync(embed: embed);
-
-				await msg.CreateReactionAsync(DiscordEmoji.FromName(c.Client, ":beer:"));
-				await msg.CreateReactionAsync(DiscordEmoji.FromName(c.Client, ":beers:"));
-				await msg.CreateReactionAsync(DiscordEmoji.FromName(c.Client, ":bed:"));
-				await c.ConfirmMessage();
-
-				var inter = c.Client.GetInteractivity();
-				var reactions = await inter.CollectReactionsAsync(msg, TimeSpan.FromSeconds(10));
-				//var response = await inter.WaitForMessageReactionAsync(msg, c.User, TimeSpan.FromSeconds(5));
-
-				// Confirm message
-				await msg.DeleteAllReactionsAsync();
-				await msg.CreateReactionAsync(DiscordEmoji.FromName(c.Client, ContentManager.EMOJI_GREEN_CHECK));
-
-				// Do reactions
-				//var responseName = response.Emoji.GetDiscordName().ToLower();
-
+				await LocationServices.InnService.EnterInn(c, loc.Services[serviceName]);
 			}
 		}
 	}

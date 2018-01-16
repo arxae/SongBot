@@ -4,9 +4,12 @@
 		"DisplayName": "SONG HQ",
 		"Description": "Our trusty home",
 		"LocationConnections": [ "Firelink" ],
-		"Services": [
-			"Inn"
-		]
+		"Services": {
+			"Inn": {
+				"Name": "Beer of Shadows",
+				"Actions": [ "Beer", "Beers", "Rest" ]
+			}
+		}
 	},
 	{
 		"LocationId": "Wandermere",

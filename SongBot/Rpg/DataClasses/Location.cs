@@ -1,6 +1,7 @@
 ﻿namespace SongBot.Rpg.DataClasses
 {
 	using System.Collections.Generic;
+	using System.Linq;
 
 	using DSharpPlus.Entities;
 
@@ -10,7 +11,12 @@
 		public string DisplayName { get; set; }
 		public string Description { get; set; }
 		public List<string> LocationConnections { get; set; }
-		public List<string> Services { get; set; }
+		public Dictionary<string, ServiceLocation> Services { get; set; }
+
+		public Location()
+		{
+			Services = new Dictionary<string, ServiceLocation>(System.StringComparer.OrdinalIgnoreCase);
+		}
 
 		public DiscordEmbed GetLocationEmbed()
 		{
@@ -21,7 +27,7 @@
 			// Services
 			if (Services.Count > 0)
 			{
-				builder.AddField("Services", string.Join(", ", Services), true);
+				builder.AddField("Services", string.Join(", ", Services.Select(c => c.Key)), true);
 			}
 
 			// Exits

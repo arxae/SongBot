@@ -22,7 +22,7 @@ namespace SongBot
 			{
 				Token = Environment.GetEnvironmentVariable("SONGBOT_KEY", EnvironmentVariableTarget.User),
 				TokenType = TokenType.Bot,
-				LogLevel = LogLevel.Debug,
+				LogLevel = LogLevel.Debug
 			});
 
 			client.DebugLogger.LogMessageReceived += DebugLogger_LogMessageReceived;

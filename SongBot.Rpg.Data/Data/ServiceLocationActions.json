@@ -1,0 +1,17 @@
+{
+	"Beer": {
+		"Description": ":beer: Get drunk by yourself",
+		"ReactionIcon": ":beer:",
+		"ActionCommand":  "echo: You start drinking beer by yourself. All alone in the corner. So lonely" 
+	},
+	"Beers": {
+		"Description": ":beers: Get other people drunk",
+		"ReactionIcon": ":beers:",
+		"ActionCommand": "echo: You buy everyone is a round, everyone is happy. You didn't remember much from afterwards"
+	},
+	"Rest": {
+		"Description": ":bed: Dive headfirst into a pillow",
+		"ReactionIcon": ":bed:",
+		"ActionCommand": "echo: ...zzzZZZ"
+	}
+}
