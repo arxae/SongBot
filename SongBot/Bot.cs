@@ -36,10 +36,6 @@ namespace SongBot
 
 			client.UseInteractivity(new InteractivityConfiguration());
 			commands.RegisterCommands(System.Reflection.Assembly.GetExecutingAssembly());
-
-			var tickTimer = new Timer(60000);
-			tickTimer.Elapsed += TickTimer_ElapsedAsync;
-			tickTimer.Start();
 		}
 
 		private Task Client_GuildAvailable(DSharpPlus.EventArgs.GuildCreateEventArgs e)
@@ -72,47 +68,6 @@ namespace SongBot
 		{
 			await client.ConnectAsync();
 			await Task.Delay(-1);
-		}
-
-		async void TickTimer_ElapsedAsync(object sender, ElapsedEventArgs e)
-		{
-			client.DebugLogger.LogMessage(LogLevel.Debug, nameof(Bot), "Processing timer tick", DateTime.Now);
-
-			using (var db = ContentManager.GetDb())
-			{
-				var playerTable = db.GetPlayerTable();
-				var players = playerTable.FindAll();
-				var dscGuild = await client.GetGuildAsync(ContentManager.Config.SongDiscordGuildId);
-
-				foreach (var p in players)
-				{
-					// Skip user if it's idle since it's not goind to do anything anyway
-					if (p.CurrentAction == ContentManager.RpgAction.Idle) continue;
-
-					// Check if player is online
-					var member = await dscGuild.GetMemberAsync(p.DiscordId);
-					if (member.Presence.Status == DSharpPlus.Entities.UserStatus.Offline) continue;
-
-					// Reduce ticks by 1
-					p.ActionTicksRemaining -= 1;
-
-					if (p.ActionTicksRemaining <= 0)
-					{
-						client.DebugLogger.LogMessage(LogLevel.Debug, nameof(Bot),
-							$"{p.DiscordId} is done with action \"{p.CurrentAction}\"", DateTime.Now);
-
-						// Execute action
-						p.ExecuteCurrentAction();
-
-						// Set back to idle
-						p.SetAction(ContentManager.RpgAction.Idle, null);
-						playerTable.Update(p.DiscordId, p);
-						continue;
-					}
-
-					playerTable.Update(p.DiscordId, p);
-				}
-			}
 		}
 	}
 }

@@ -1,5 +1,4 @@
-﻿
-namespace SongBot.Rpg.LocationServices
+﻿namespace SongBot.Rpg.LocationServices
 {
 	using System;
 	using System.Linq;

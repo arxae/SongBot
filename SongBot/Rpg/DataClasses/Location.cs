@@ -24,14 +24,19 @@
 				.WithTitle(DisplayName)
 				.WithDescription(Description);
 
+			var footer = new System.Text.StringBuilder();
+			footer.Append("Cmd Help: .travelto <name>");
+
 			// Services
 			if (Services.Count > 0)
 			{
 				builder.AddField("Services", string.Join(", ", Services.Select(c => c.Key)), true);
+				footer.Append(", .enter <name>");
 			}
 
 			// Exits
 			builder.AddField("Exits", string.Join(", ", LocationConnections), true);
+			builder.WithFooter(footer.ToString());
 
 			return builder.Build();
 		}

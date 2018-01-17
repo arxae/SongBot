@@ -9,21 +9,6 @@
 	[Group("list"), RequireRoles(RoleCheckMode.All, "Realm Admin")]
 	public class ListCommands
 	{
-		[Command("actions"), RequireRoles(RoleCheckMode.All, "Realm Admin")]
-		public async Task ListActions(CommandContext c)
-		{
-			var sb = new System.Text.StringBuilder();
-			sb.AppendLine("**Available actions**: ");
-
-			foreach (var act in ContentManager.Actions.Keys)
-			{
-				sb.AppendLine($"{(int) act} - {act}");
-			}
-			
-			await c.Message.DeleteAsync();
-			await c.RespondWithDmAsync(sb.ToString());
-		}
-
 		[Command("races")]
 		public async Task ListRaces(CommandContext c)
 		{

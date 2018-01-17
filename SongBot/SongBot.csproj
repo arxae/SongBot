@@ -79,6 +79,7 @@
     <Compile Include="ActionProcessor.cs" />
     <Compile Include="Bot.cs" />
     <Compile Include="BotControlCommands.cs" />
+    <Compile Include="Rpg\Commands\CharacterCommands.cs" />
     <Compile Include="Rpg\Commands\DbCommands.cs" />
     <Compile Include="Rpg\Commands\ListCommands.cs" />
     <Compile Include="Rpg\Commands\LocationCommands.cs" />
@@ -87,7 +88,6 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Rpg\DataClasses\RpgActionDef.cs" />
     <Compile Include="Rpg\DataClasses\CharClass.cs" />
     <Compile Include="Rpg\DataClasses\GameConfig.cs" />
     <Compile Include="Rpg\DataClasses\Location.cs" />

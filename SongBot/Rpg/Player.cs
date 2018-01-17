@@ -9,13 +9,13 @@ namespace SongBot.Rpg
 		public string Race { get; set; }
 		public string Class { get; set; }
 
+		// Status
+		public int Level { get; set; }
+		public int HpCurrent { get; set; }
+		public int HpMax { get; set; }
+
 		// Location
 		public string CurrentLocation { get; set; }
-
-		// Actions
-		public ContentManager.RpgAction CurrentAction { get; set; }
-		public string ActionTarget { get; set; }
-		public int ActionTicksRemaining { get; set; }
 
 		public Player() { }
 
@@ -26,50 +26,9 @@ namespace SongBot.Rpg
 			Class = _class;
 
 			CurrentLocation = ContentManager.Config.StartingLocation;
-			CurrentAction = ContentManager.RpgAction.Idle;
-			ActionTicksRemaining = -1;
-		}
 
-		public ContentManager.RpgActionResult SetAction(ContentManager.RpgAction newAction, string actionTarget)
-		{
-			var currAction = ContentManager.Actions[CurrentAction];
-
-			if (currAction.IsInterruptable == false) return ContentManager.RpgActionResult.CannotInterrupt;
-
-			var nextAction = ContentManager.Actions[newAction];
-
-			CurrentAction = newAction;
-			ActionTarget = actionTarget;
-
-			if (newAction == ContentManager.RpgAction.Idle)
-			{
-				ActionTicksRemaining = -1;
-			}
-			else
-			{
-				int newCost = nextAction.TicksNeeded;
-
-				if (nextAction.InterruptionTickCost > 0)
-				{
-					newCost = newCost + nextAction.InterruptionTickCost;
-				}
-
-				ActionTicksRemaining = newCost;
-
-				if (ActionTicksRemaining == 0) return ContentManager.RpgActionResult.DoneInstant;
-			}
-
-			return ContentManager.RpgActionResult.Done;
-		}
-
-		public void ExecuteCurrentAction()
-		{
-			switch (CurrentAction)
-			{
-				case ContentManager.RpgAction.Idle: return;
-				case ContentManager.RpgAction.Travel: CurrentLocation = ContentManager.Locations[ActionTarget].LocationId; break;
-				default: throw new ArgumentOutOfRangeException();
-			}
+			HpMax = 10;
+			HpCurrent = 10;
 		}
 	}
 }

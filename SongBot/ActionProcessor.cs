@@ -11,7 +11,7 @@ using DSharpPlus.Entities;
 		{
 			if (action.ToLower().StartsWith("echo:"))
 			{
-				string msg = action.Substring(5);
+				string msg = $"{c.User.Mention} {action.Substring(5)}";
 				await associatedMsg.ModifyAsync(msg, null);
 				return;
 			}

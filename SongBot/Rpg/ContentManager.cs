@@ -26,8 +26,9 @@
 		public static Dictionary<string, Race> Races { get; private set; }
 		public static Dictionary<string, CharClass> Classes { get; private set; }
 		public static Dictionary<string, Location> Locations { get; private set; }
-		public static Dictionary<RpgAction, RpgActionDef> Actions { get; private set; }
 		public static Dictionary<string, ServiceLocationAction> ServiceLocationActions { get; private set; }
+
+		public static LiteDB.LiteDatabase GetDb() => new LiteDB.LiteDatabase(DB_NAME);
 
 		public static void Initialize()
 		{
@@ -39,23 +40,6 @@
 			var configJson = File.ReadAllText("Data/Config.json");
 			Config = _JSON.DeserializeObject<GameConfig>(configJson);
 			Console.Write("...Config");
-
-			// ----- Actions
-			Actions = new Dictionary<RpgAction, RpgActionDef>();
-			var actionsJson = File.ReadAllText("Data/Actions.json");
-			var _actions = _JSON.DeserializeObject<List<RpgActionDef>>(actionsJson);
-			foreach (var a in _actions)
-			{
-				if (Enum.TryParse(a.ActionName, out RpgAction act) == false)
-				{
-					throw new ArgumentException($"Could not parse {a.ActionName} to a valid action definition");
-				}
-
-				if (a.DisplayName == null) a.DisplayName = a.ActionName;
-
-				Actions.Add(act, a);
-			}
-			Console.Write($"...Actions({_actions.Count})");
 
 			// ----- ServiceLocationActions
 			var slaJson = File.ReadAllText("Data/ServiceLocationActions.json");
@@ -85,18 +69,6 @@
 
 			sw.Stop();
 			Console.WriteLine($"...Done in {sw.Elapsed}.");
-		}
-
-		public static LiteDB.LiteDatabase GetDb() => new LiteDB.LiteDatabase(DB_NAME);
-
-		public enum RpgAction
-		{
-			Idle, Travel
-		}
-
-		public enum RpgActionResult
-		{
-			Done, DoneInstant, CannotInterrupt
 		}
 	}
 }

@@ -59,23 +59,14 @@ namespace SongBot.Rpg.Commands
 
 				if (currLoc.LocationConnections.Contains(destination, StringComparer.OrdinalIgnoreCase))
 				{
-					var res = player.SetAction(ContentManager.RpgAction.Travel, destination);
+					var nextLoc = ContentManager.Locations[destination];
 
-					if (res == ContentManager.RpgActionResult.CannotInterrupt)
-					{
-						await c.RespondWithDmAsync("Your current action cannot be interrupted");
-						await c.Message.DeleteAsync();
-						return;
-					}
-
-					if (res == ContentManager.RpgActionResult.DoneInstant)
-					{
-						player.ExecuteCurrentAction();
-					}
+					player.CurrentLocation = nextLoc.LocationId;
 
 					players.Update(player.DiscordId, player);
 
 					await c.ConfirmMessage();
+					await c.RespondAsync($"{c.User.Mention} arrived in {nextLoc.DisplayName}", embed: nextLoc.GetLocationEmbed());
 				}
 			}
 		}
