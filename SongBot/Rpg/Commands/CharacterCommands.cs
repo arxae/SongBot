@@ -33,7 +33,7 @@
 
 				var status = new System.Text.StringBuilder();
 				status.AppendLine("**Status**");
-				status.AppendLine("**Level:**")
+				status.AppendLine("**Level:**");
 				status.AppendLine($"**- Hp:** {player.HpCurrent}/{player.HpMax}");
 
 				embedBuilder.WithDescription(status.ToString());

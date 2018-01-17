@@ -83,7 +83,7 @@
     <Compile Include="Rpg\Commands\DbCommands.cs" />
     <Compile Include="Rpg\Commands\ListCommands.cs" />
     <Compile Include="Rpg\Commands\LocationCommands.cs" />
-    <Compile Include="Rpg\Commands\RpgCharacterCommands.cs" />
+    <Compile Include="Rpg\Commands\RpgGameCommands.cs" />
     <Compile Include="Rpg\ContentManager.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Program.cs" />
@@ -94,7 +94,9 @@
     <Compile Include="Rpg\DataClasses\Race.cs" />
     <Compile Include="Rpg\DataClasses\ServiceLocation.cs" />
     <Compile Include="Rpg\DataClasses\ServiceLocationAction.cs" />
+    <Compile Include="Rpg\LocationServices\ILocationService.cs" />
     <Compile Include="Rpg\LocationServices\InnService.cs" />
+    <Compile Include="Rpg\LocationServices\ShopService.cs" />
     <Compile Include="Rpg\Player.cs" />
   </ItemGroup>
   <ItemGroup>

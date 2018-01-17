@@ -65,5 +65,11 @@
 		// DB Stuff
 		public static string GetFullUsername(this DiscordUser user) => $"{user.Username}#{user.Discriminator}";
 		public static LiteDB.LiteCollection<Player> GetPlayerTable(this LiteDB.LiteDatabase db) => db.GetCollection<Player>(ContentManager.DB_PLAYER_TABLE);
+
+		public static Player GetPlayer(this LiteDB.LiteDatabase db, ulong playerId)
+		{
+			var playerTable = db.GetPlayerTable();
+			return playerTable.FindOne(p => p.DiscordId == playerId);
+		}
 	}
 }

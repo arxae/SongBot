@@ -8,7 +8,10 @@
 			"Inn": {
 				"Name": "Beer of Shadows",
 				"Actions": [ "Beer", "Beers", "Rest" ]
-			}
+			},
+			"Shop": {
+				"Name": "We put stuff in jars"
+			} 
 		}
 	},
 	{

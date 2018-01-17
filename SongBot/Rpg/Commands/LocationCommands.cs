@@ -92,7 +92,14 @@ namespace SongBot.Rpg.Commands
 
 				if (loc.Services.ContainsKey(serviceName) == false) return;
 
-				await LocationServices.InnService.EnterInn(c, loc.Services[serviceName]);
+				switch (serviceName)
+				{
+					case "inn":
+						await LocationServices.InnService.EnterInn(c, loc.Services[serviceName]);
+						break;
+					case "shop":
+						break;
+				}
 			}
 		}
 	}

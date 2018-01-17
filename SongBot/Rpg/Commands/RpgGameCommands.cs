@@ -8,13 +8,13 @@
 
 	[Group("rpg")]
 	[Description("RPG Commands")]
-	public class RpgCharacterCommands
+	public class RpgGameCommands
 	{
 		[Command("register"), Description("Register yourself as a new character")]
 		public async Task RegisterNewCharacter(CommandContext c, string raceName)
 		{
 			c.LogDebug($"Character registration received from {c.User.GetFullUsername()} (race: {raceName})");
-			
+
 			if (await c.RpgChannelGuard() == false) return;
 
 			if (ContentManager.Races.ContainsKey(raceName) == false)
@@ -61,6 +61,25 @@
 
 			await c.ConfirmMessage();
 			await c.RespondAsync($"{c.User.Mention} has left the adventure! {ContentManager.EMOJI_FACE_SAD}");
+		}
+
+		[Command("hurtme")]
+		public async Task HurtOwnCharacter(CommandContext c, int dmgValue)
+		{
+			c.LogDebug($"{c.User.GetFullUsername()} -> {nameof(HurtOwnCharacter)} ({nameof(dmgValue)}: {dmgValue})");
+			using (var db = ContentManager.GetDb())
+			{
+				var player = db.GetPlayer(c.User.Id);
+
+				player.HpCurrent -= dmgValue;
+
+				if (player.HpCurrent < 0) player.HpCurrent = 0;
+				if (player.HpCurrent > player.HpMax) player.HpCurrent = player.HpMax;
+
+				db.GetPlayerTable().Update(player.DiscordId, player);
+			}
+
+			await c.ConfirmMessage();
 		}
 	}
 }

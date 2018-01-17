@@ -10,8 +10,13 @@
 
 	using DataClasses;
 
-	public class InnService
+	public class InnService : ILocationService
 	{
+		public void Test()
+		{
+			Console.WriteLine("Inn test");
+		}
+
 		public static async Task EnterInn(CommandContext c, ServiceLocation loc)
 		{
 			var desc = new System.Text.StringBuilder();
@@ -64,7 +69,7 @@
 					break;
 				}
 			}
-			
+
 			await ActionProcessor.ExecuteAction(c, actionToPerform, msg);
 		}
 	}
