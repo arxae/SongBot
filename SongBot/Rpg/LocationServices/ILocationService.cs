@@ -1,7 +1,13 @@
 ﻿namespace SongBot.Rpg.LocationServices
 {
-    public interface ILocationService
-    {
-	    void Test();
-    }
+	using System.Threading.Tasks;
+
+	using DSharpPlus.CommandsNext;
+
+	using DataClasses;
+
+	public interface ILocationService
+	{
+		Task EnterLocation(CommandContext c, ServiceLocation loc);
+	}
 }

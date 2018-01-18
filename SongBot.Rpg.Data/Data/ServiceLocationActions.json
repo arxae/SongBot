@@ -2,16 +2,27 @@
 	"Beer": {
 		"Description": ":beer: Get drunk by yourself",
 		"ReactionIcon": ":beer:",
-		"ActionCommand":  "echo: You start drinking beer by yourself. All alone in the corner. So lonely" 
+		"ActionCommands": [
+			"setmsg::@mentionself starts drinking beer all alone in the corner. So lonely.",
+			"healself::5"
+		]
 	},
-	"Beers": {
-		"Description": ":beers: Get other people drunk",
+	"GroupBeers": {
+		"Description": ":beers: Get drunk together",
 		"ReactionIcon": ":beers:",
-		"ActionCommand": "echo: You buy everyone is a round, everyone is happy. You didn't remember much from afterwards"
+		"ActionCommands": [ 
+			"echo::@mentionself buys a round, everyone is happy.",
+			"echo::You don't remember much of what happend after though.",
+			"deleteassocmsg::" 
+		]
 	},
 	"Rest": {
 		"Description": ":bed: Dive headfirst into a pillow",
 		"ReactionIcon": ":bed:",
-		"ActionCommand": "echo: ...zzzZZZ"
+		"ActionCommands": [ 
+			"addmsg::...zzzZZZ" ,
+			"addmsg::@mentionself experiences a good night sleep.",
+			"healselffull::"
+		]
 	}
 }

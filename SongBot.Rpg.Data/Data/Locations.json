@@ -3,26 +3,32 @@
 		"LocationId": "SongHq",
 		"DisplayName": "SONG HQ",
 		"Description": "Our trusty home",
+		"Hostility": "Sanctuary",
 		"LocationConnections": [ "Firelink" ],
 		"Services": {
-			"Inn": {
+			"BeerOfTheShadows": {
 				"Name": "Beer of Shadows",
-				"Actions": [ "Beer", "Beers", "Rest" ]
+				"ServiceImpl": "Inn",
+				"Actions": [ "Beer", "GroupBeers", "Rest" ]
 			},
-			"Shop": {
-				"Name": "We put stuff in jars"
-			} 
+			"ShadowOfBeer": {
+				"Name": "Shadow of Beer",
+				"ServiceImpl": "Inn",
+				"Actions": [ "Beer" ]
+			}
 		}
 	},
 	{
 		"LocationId": "Firelink",
 		"DisplayName": "Firelink",
 		"Description": "A dusty road that leads to the settlement of Firelink",
+		"Hostility": "Dangerous",
 		"LocationConnections": [ "SongHq" ],
 		"Services": {
 			"Inn": {
 				"Name": "The Bonfire",
-				"Actions": [ "Beer", "Rest" ]
+				"ServiceImpl": "Inn",
+				"Actions": [ "Rest" ]
 			}
 		}
 	}

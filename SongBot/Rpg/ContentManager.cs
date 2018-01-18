@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
+	using System.Linq;
 
 	using DataClasses;
 
@@ -27,6 +28,7 @@
 		public static Dictionary<string, CharClass> Classes { get; private set; }
 		public static Dictionary<string, Location> Locations { get; private set; }
 		public static Dictionary<string, ServiceLocationAction> ServiceLocationActions { get; private set; }
+		public static Dictionary<string, Type> ServiceLocationActionImplementations { get; private set; }
 
 		public static LiteDB.LiteDatabase GetDb() => new LiteDB.LiteDatabase(DB_NAME);
 
@@ -45,6 +47,14 @@
 			var slaJson = File.ReadAllText("Data/ServiceLocationActions.json");
 			ServiceLocationActions = _JSON.DeserializeObject<Dictionary<string, ServiceLocationAction>>(slaJson);
 			Console.Write($"...SLAs({ServiceLocationActions.Count})");
+
+			// ----- ServiceLocationImplementations
+			var interfaceType = typeof(LocationServices.ILocationService);
+			ServiceLocationActionImplementations = AppDomain.CurrentDomain.GetAssemblies()
+				.SelectMany(s => s.GetTypes())
+				.Where(t => t.GetInterfaces().Contains(interfaceType) && t.Name.EndsWith("Service"))
+				.ToDictionary(k => k.Name.Replace("Service", ""), v => v);
+			Console.Write($"...SLA Impl({ServiceLocationActionImplementations.Count})");
 
 			// ----- Races
 			Races = new Dictionary<string, Race>(StringComparer.OrdinalIgnoreCase);

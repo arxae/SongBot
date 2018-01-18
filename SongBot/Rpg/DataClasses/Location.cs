@@ -10,6 +10,7 @@
 		public string LocationId { get; set; }
 		public string DisplayName { get; set; }
 		public string Description { get; set; }
+		public string Hostility { get; set; }
 		public List<string> LocationConnections { get; set; }
 		public Dictionary<string, ServiceLocation> Services { get; set; }
 
@@ -21,21 +22,42 @@
 		public DiscordEmbed GetLocationEmbed()
 		{
 			var builder = new DiscordEmbedBuilder()
-				.WithTitle(DisplayName)
-				.WithDescription(Description);
+				.WithTitle(DisplayName);
+			//.WithDescription(Description);
+
+			var desc = new System.Text.StringBuilder(Description);
 
 			var footer = new System.Text.StringBuilder();
 			footer.Append("Cmd Help: .travelto <name>");
 
+			// Hostility Colors
+			switch (Hostility.ToLower())
+			{
+				case "sanctuary": builder.WithColor(DiscordColor.Gold); break;
+				case "friendly": builder.WithColor(DiscordColor.SpringGreen); break;
+				case "neutral": builder.WithColor(DiscordColor.CornflowerBlue); break;
+				case "dangerous": builder.WithColor(DiscordColor.Orange); break;
+				case "hostile": builder.WithColor(DiscordColor.IndianRed); break;
+				default: builder.WithColor(DiscordColor.White); break;
+			}
+
+
 			// Services
 			if (Services.Count > 0)
 			{
-				builder.AddField("Services", string.Join(", ", Services.Select(c => c.Key)), true);
+				desc.AppendLine();
+				desc.AppendLine("**Services**");
+				desc.AppendLine(string.Join(", ", Services.Keys));
+
 				footer.Append(", .enter <name>");
 			}
 
 			// Exits
-			builder.AddField("Exits", string.Join(", ", LocationConnections), true);
+			desc.AppendLine();
+			desc.AppendLine("**Exits**");
+			desc.AppendLine(string.Join(", ", LocationConnections));
+
+			builder.WithDescription(desc.ToString());
 			builder.WithFooter(footer.ToString());
 
 			return builder.Build();

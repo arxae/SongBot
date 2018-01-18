@@ -90,16 +90,29 @@ namespace SongBot.Rpg.Commands
 
 				var loc = ContentManager.Locations[player.CurrentLocation];
 
-				if (loc.Services.ContainsKey(serviceName) == false) return;
-
-				switch (serviceName)
+				if (loc.Services.ContainsKey(serviceName) == false)
 				{
-					case "inn":
-						await LocationServices.InnService.EnterInn(c, loc.Services[serviceName]);
-						break;
-					case "shop":
-						break;
+					Serilog.Log.ForContext<LocationCommands>().Error("[ENTER] Location service {sv} not found", serviceName);
+					return;
 				}
+
+				var implName = loc.Services[serviceName].ServiceImpl;
+				Type serviceType;
+				try
+				{
+					serviceType = ContentManager.ServiceLocationActionImplementations[implName];
+				}
+				catch
+				{
+					Serilog.Log.ForContext<LocationCommands>()
+						.Error("[ENTER] Location service implementation {sv} not found", serviceName);
+					return;
+
+				}
+
+				var srv = (LocationServices.ILocationService) Activator.CreateInstance(serviceType);
+
+				await srv.EnterLocation(c, loc.Services[serviceName]);
 			}
 		}
 	}

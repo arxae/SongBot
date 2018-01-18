@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using DSharpPlus.CommandsNext;
+using SongBot.Rpg.DataClasses;
 
 namespace SongBot.Rpg.LocationServices
 {
 	public class ShopService : ILocationService
 	{
-		public void Test()
+		public Task EnterLocation(CommandContext c, ServiceLocation loc)
 		{
-			Console.WriteLine("shop test");
+			throw new NotImplementedException();
 		}
 	}
 }

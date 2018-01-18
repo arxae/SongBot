@@ -1,7 +1,8 @@
-﻿namespace SongBot.Rpg.LocationServices
+﻿using System.Collections.Generic;
+
+namespace SongBot.Rpg.LocationServices
 {
 	using System;
-	using System.Linq;
 	using System.Threading.Tasks;
 
 	using DSharpPlus.CommandsNext;
@@ -12,12 +13,7 @@
 
 	public class InnService : ILocationService
 	{
-		public void Test()
-		{
-			Console.WriteLine("Inn test");
-		}
-
-		public static async Task EnterInn(CommandContext c, ServiceLocation loc)
+		public async Task EnterLocation(CommandContext c, ServiceLocation loc)
 		{
 			var desc = new System.Text.StringBuilder();
 
@@ -58,19 +54,19 @@
 
 			var responseName = response.Emoji.GetDiscordName().ToLower();
 
-			string actionToPerform = string.Empty;
+			var actionsToPerform = new List<string>();
+
 			foreach (var act in loc.Actions)
 			{
 				var sla = ContentManager.ServiceLocationActions[act];
 
 				if (sla.ReactionIcon == responseName)
 				{
-					actionToPerform = sla.ActionCommand;
-					break;
+					actionsToPerform.AddRange(sla.ActionCommands);
 				}
 			}
 
-			await ActionProcessor.ExecuteAction(c, actionToPerform, msg);
+			await ActionProcessor.ExecuteActionListAsync(c, actionsToPerform, msg);
 		}
 	}
 }
