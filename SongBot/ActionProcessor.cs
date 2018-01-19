@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SongBot.Rpg;
 
 namespace SongBot
 {
@@ -8,87 +7,88 @@ namespace SongBot
 	using DSharpPlus.CommandsNext;
 	using DSharpPlus.Entities;
 
+	using Rpg;
+
 	public class ActionProcessor
 	{
-		/// <summary>
-		/// Execute a list of commands
-		/// </summary>
-		/// <param name="c">CommandContext of the message requesting something that includes the action</param>
-		/// <param name="actionList">List of actions to be parsed</param>
-		/// <param name="associatedMsg">A reply message from the bot to the user (used with interactivity)</param>
-		/// <returns></returns>
-		public static async Task ExecuteActionListAsync(CommandContext c, List<string> actionList, DiscordMessage associatedMsg = null)
+		readonly CommandContext cmdContext;
+		public DiscordMessage AssociatedMsg { get; set; }
+
+		public ActionProcessor(CommandContext c)
 		{
-			foreach (var act in actionList)
+			cmdContext = c;
+		}
+
+		public ActionProcessor(CommandContext c, DiscordMessage associatedMsg) : this(c)
+		{
+			AssociatedMsg = associatedMsg;
+		}
+
+		public async Task ProcessActionList(List<string> actions)
+		{
+			for (int i = 0; i < actions.Count; i++)
 			{
-				await ExecuteActionAsync(c, act, associatedMsg);
+				await ExecuteActionAsync(actions[i]);
 			}
 		}
 
-		/// <summary>
-		/// Execute a single command
-		/// </summary>
-		/// <param name="c">CommandContext of the message requesting something that includes the action</param>
-		/// <param name="action">Actions to be parsed</param>
-		/// <param name="associatedMsg">A reply message from the bot to the user (used with interactivity)</param>
-		/// <returns></returns>
-		public static async Task ExecuteActionAsync(CommandContext c, string action, DiscordMessage associatedMsg = null)
+		public async Task ExecuteActionAsync(string action)
 		{
 			try
 			{
 				// Sets the associatedMsg to a specified value
-				if (action.StartsWith("setmsg::"))
+				if (action.StartsWith("setmsg->"))
 				{
-					string msg = ParseMessageMentions(c, $"{action.Substring("setmsg::".Length)}");
-					if (associatedMsg == null) return;
-					await associatedMsg.ModifyAsync(msg, null);
+					string msg = ParseMessageMentions(cmdContext, $"{action.Substring("setmsg->".Length)}");
+					if (AssociatedMsg == null) return;
+					await AssociatedMsg.ModifyAsync(msg, null);
 					return;
 				}
 
 				// Heal the person who requested the command
-				if (action.StartsWith("healself::"))
+				if (action.StartsWith("healself->"))
 				{
-					var parts = action.Split(new[] {"::"}, System.StringSplitOptions.None);
+					var parts = action.Split(new[] { "->" }, System.StringSplitOptions.None);
 					if (int.TryParse(parts[1], out int healAmount) == false)
 					{
 						Serilog.Log.ForContext<ActionProcessor>().Error("Error processing action params: {cmd}", action);
 						return;
 					}
 
-					HealPlayer(c.User.Id, healAmount);
+					HealPlayer(cmdContext.User.Id, healAmount);
 					return;
 				}
 
 				// Heal all health
-				if (action.StartsWith("healselffull::"))
+				if (action.StartsWith("healselffull->"))
 				{
-					FullHealPlayer(c.User.Id);
+					FullHealPlayer(cmdContext.User.Id);
 					return;
 				}
 
 				// Respond with a message
-				if (action.StartsWith("addmsg::"))
+				if (action.StartsWith("addmsg->"))
 				{
-					var msg = ParseMessageMentions(c, action.Substring("addmsg::".Length));
-					await c.RespondAsync(msg);
+					var msg = ParseMessageMentions(cmdContext, action.Substring("addmsg->".Length));
+					await cmdContext.RespondAsync(msg);
 					return;
 				}
 
 				// Delete the original message from the user
-				if (action.StartsWith("deletemsg::"))
+				if (action.StartsWith("deletemsg->"))
 				{
-					await c.Message.DeleteAsync();
+					await cmdContext.Message.DeleteAsync();
 					return;
 				}
 
 				// Delete the associated message (reply from user command)
-				if (action.StartsWith("deleteassocmsg::"))
+				if (action.StartsWith("deleteassocmsg->"))
 				{
-					if (associatedMsg == null) return;
-					await associatedMsg.DeleteAsync();
+					if (AssociatedMsg == null) return;
+					await AssociatedMsg.DeleteAsync();
 					return;
 				}
-				
+
 				Serilog.Log.ForContext<ActionProcessor>().Warning("Unrecognized action: {cmd}", action);
 			}
 			catch
@@ -97,13 +97,13 @@ namespace SongBot
 			}
 		}
 
-		static void HealPlayer(ulong playerId, int amount)
+		void HealPlayer(ulong playerId, int amount)
 		{
 			using (var db = ContentManager.GetDb())
 			{
 				var player = db.GetPlayer(playerId);
 				if (player == null) return;
-				
+
 				player.HpCurrent += amount;
 				if (player.HpCurrent > player.HpMax)
 				{
@@ -114,7 +114,7 @@ namespace SongBot
 			}
 		}
 
-		static void FullHealPlayer(ulong playerId)
+		void FullHealPlayer(ulong playerId)
 		{
 			using (var db = ContentManager.GetDb())
 			{
@@ -126,7 +126,7 @@ namespace SongBot
 			}
 		}
 
-		static string ParseMessageMentions(CommandContext c, string msg)
+		string ParseMessageMentions(CommandContext c, string msg)
 		{
 			return msg.Replace("@mentionself", c.User.Mention);
 		}

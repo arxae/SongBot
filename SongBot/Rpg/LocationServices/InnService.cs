@@ -66,7 +66,7 @@ namespace SongBot.Rpg.LocationServices
 				}
 			}
 
-			await ActionProcessor.ExecuteActionListAsync(c, actionsToPerform, msg);
+			await new ActionProcessor(c, msg).ProcessActionList(actionsToPerform);
 		}
 	}
 }

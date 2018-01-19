@@ -3,26 +3,26 @@
 		"Description": ":beer: Get drunk by yourself",
 		"ReactionIcon": ":beer:",
 		"ActionCommands": [
-			"setmsg::@mentionself starts drinking beer all alone in the corner. So lonely.",
-			"healself::5"
+			"setmsg->@mentionself starts drinking beer all alone in the corner. So lonely.",
+			"healself->5"
 		]
 	},
 	"GroupBeers": {
 		"Description": ":beers: Get drunk together",
 		"ReactionIcon": ":beers:",
-		"ActionCommands": [ 
-			"echo::@mentionself buys a round, everyone is happy.",
-			"echo::You don't remember much of what happend after though.",
-			"deleteassocmsg::" 
+		"ActionCommands": [
+			"addmsg->@mentionself buys a round, everyone is happy.",
+			"addmsg->You don't remember much of what happend after though.",
+			"deleteassocmsg->"
 		]
 	},
 	"Rest": {
 		"Description": ":bed: Dive headfirst into a pillow",
 		"ReactionIcon": ":bed:",
-		"ActionCommands": [ 
-			"addmsg::...zzzZZZ" ,
-			"addmsg::@mentionself experiences a good night sleep.",
-			"healselffull::"
+		"ActionCommands": [
+			"addmsg->...zzzZZZ",
+			"addmsg->@mentionself experiences a good night sleep.",
+			"healselffull->"
 		]
 	}
 }

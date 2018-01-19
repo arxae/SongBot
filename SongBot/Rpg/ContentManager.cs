@@ -29,6 +29,7 @@
 		public static Dictionary<string, Location> Locations { get; private set; }
 		public static Dictionary<string, ServiceLocationAction> ServiceLocationActions { get; private set; }
 		public static Dictionary<string, Type> ServiceLocationActionImplementations { get; private set; }
+		public static Dictionary<string, Item> Items { get; private set; }
 
 		public static LiteDB.LiteDatabase GetDb() => new LiteDB.LiteDatabase(DB_NAME);
 
@@ -76,6 +77,13 @@
 			var _locations = _JSON.DeserializeObject<List<Location>>(locationsJson);
 			foreach (var loc in _locations) { Locations.Add(loc.LocationId, loc); }
 			Console.Write($"...Locations({_locations.Count})");
+
+			// ----- Items
+			Items = new Dictionary<string, Item>(StringComparer.OrdinalIgnoreCase);
+			var itemsJson = File.ReadAllText("Data/Items.json");
+			var _items = _JSON.DeserializeObject<List<Item>>(itemsJson);
+			foreach (var i in _items) { Items.Add(i.Id, i); }
+			Console.Write($"...Items({_items.Count})");
 
 			sw.Stop();
 			Console.WriteLine($"...Done in {sw.Elapsed}.");
