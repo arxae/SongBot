@@ -24,7 +24,7 @@
     <Content Include="$(MSBuildThisFileDirectory)Data\Classes.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="$(MSBuildThisFileDirectory)Data\ServiceLocationActions.json">
+    <Content Include="$(MSBuildThisFileDirectory)Data\PlaceActions.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

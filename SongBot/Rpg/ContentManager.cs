@@ -6,6 +6,7 @@
 	using System.Linq;
 
 	using DataClasses;
+	using Inventory;
 
 	using _JSON = Newtonsoft.Json.JsonConvert;
 
@@ -23,19 +24,20 @@
 
 		public static GameConfig Config { get; private set; }
 		public static DSharpPlus.Entities.DiscordChannel RpgChannel { get; set; }
+		public static Random Rng { get; private set; }
 
 		public static Dictionary<string, Race> Races { get; private set; }
 		public static Dictionary<string, CharClass> Classes { get; private set; }
 		public static Dictionary<string, Location> Locations { get; private set; }
-		public static Dictionary<string, ServiceLocationAction> ServiceLocationActions { get; private set; }
-		public static Dictionary<string, Type> ServiceLocationActionImplementations { get; private set; }
+		public static Dictionary<string, PlaceAction> PlaceActions { get; private set; }
+		public static Dictionary<string, Type> PlaceActionImplementations { get; private set; }
 		public static Dictionary<string, Item> Items { get; private set; }
 
 		public static LiteDB.LiteDatabase GetDb() => new LiteDB.LiteDatabase(DB_NAME);
 
 		public static void Initialize()
 		{
-			Console.Write("Content Manager loading");
+			Console.Write("Loading");
 			var sw = new System.Diagnostics.Stopwatch();
 			sw.Start();
 
@@ -45,17 +47,17 @@
 			Console.Write("...Config");
 
 			// ----- ServiceLocationActions
-			var slaJson = File.ReadAllText("Data/ServiceLocationActions.json");
-			ServiceLocationActions = _JSON.DeserializeObject<Dictionary<string, ServiceLocationAction>>(slaJson);
-			Console.Write($"...SLAs({ServiceLocationActions.Count})");
+			var slaJson = File.ReadAllText("Data/PlaceActions.json");
+			PlaceActions = _JSON.DeserializeObject<Dictionary<string, PlaceAction>>(slaJson);
+			Console.Write($"...SLAs({PlaceActions.Count})");
 
 			// ----- ServiceLocationImplementations
-			var interfaceType = typeof(LocationServices.ILocationService);
-			ServiceLocationActionImplementations = AppDomain.CurrentDomain.GetAssemblies()
+			var interfaceType = typeof(Places.IPlace);
+			PlaceActionImplementations = AppDomain.CurrentDomain.GetAssemblies()
 				.SelectMany(s => s.GetTypes())
 				.Where(t => t.GetInterfaces().Contains(interfaceType) && t.Name.EndsWith("Service"))
 				.ToDictionary(k => k.Name.Replace("Service", ""), v => v);
-			Console.Write($"...SLA Impl({ServiceLocationActionImplementations.Count})");
+			Console.Write($"...SLA Impl({PlaceActionImplementations.Count})");
 
 			// ----- Races
 			Races = new Dictionary<string, Race>(StringComparer.OrdinalIgnoreCase);
@@ -84,6 +86,10 @@
 			var _items = _JSON.DeserializeObject<List<Item>>(itemsJson);
 			foreach (var i in _items) { Items.Add(i.Id, i); }
 			Console.Write($"...Items({_items.Count})");
+
+			// ----- Misc
+			Rng = new Random();
+			Console.Write("...Misc");
 
 			sw.Stop();
 			Console.WriteLine($"...Done in {sw.Elapsed}.");

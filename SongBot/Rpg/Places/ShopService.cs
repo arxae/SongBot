@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using SongBot.Rpg.DataClasses;
 
-namespace SongBot.Rpg.LocationServices
+namespace SongBot.Rpg.Places
 {
-	public class ShopService : ILocationService
+	public class ShopService : IPlace
 	{
-		public Task EnterLocation(CommandContext c, ServiceLocation loc)
+		public Task EnterLocation(CommandContext c, Place loc)
 		{
 			throw new NotImplementedException();
 		}

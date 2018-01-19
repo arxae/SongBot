@@ -1,6 +1,4 @@
-﻿using DSharpPlus.Entities;
-
-namespace SongBot.Rpg.Commands
+﻿namespace SongBot.Rpg.Commands
 {
 	using System;
 	using System.Linq;
@@ -8,7 +6,6 @@ namespace SongBot.Rpg.Commands
 
 	using DSharpPlus.CommandsNext;
 	using DSharpPlus.CommandsNext.Attributes;
-	using DSharpPlus.Interactivity;
 
 	public class LocationCommands
 	{
@@ -72,9 +69,9 @@ namespace SongBot.Rpg.Commands
 		}
 
 		[Command("enter"), Description("Enter a service location")]
-		public async Task EnterServiceLocation(CommandContext c, string serviceName)
+		public async Task EnterPlace(CommandContext c, string placeName)
 		{
-			c.LogDebug($"{c.User.GetFullUsername()} -> {nameof(EnterServiceLocation)} (serviceName: {serviceName})");
+			c.LogDebug($"{c.User.GetFullUsername()} -> {nameof(EnterPlace)} ({nameof(placeName)}: {placeName})");
 
 			using (var db = ContentManager.GetDb())
 			{
@@ -90,29 +87,29 @@ namespace SongBot.Rpg.Commands
 
 				var loc = ContentManager.Locations[player.CurrentLocation];
 
-				if (loc.Services.ContainsKey(serviceName) == false)
+				if (loc.Places.ContainsKey(placeName) == false)
 				{
-					Serilog.Log.ForContext<LocationCommands>().Error("[ENTER] Location service {sv} not found", serviceName);
+					Serilog.Log.ForContext<LocationCommands>().Error("[ENTER] Location service {sv} not found", placeName);
 					return;
 				}
 
-				var implName = loc.Services[serviceName].ServiceImpl;
+				var implName = loc.Places[placeName].ServiceImpl;
 				Type serviceType;
 				try
 				{
-					serviceType = ContentManager.ServiceLocationActionImplementations[implName];
+					serviceType = ContentManager.PlaceActionImplementations[implName];
 				}
 				catch
 				{
 					Serilog.Log.ForContext<LocationCommands>()
-						.Error("[ENTER] Location service implementation {sv} not found", serviceName);
+						.Error("[ENTER] Location service implementation {sv} not found", placeName);
 					return;
 
 				}
 
-				var srv = (LocationServices.ILocationService) Activator.CreateInstance(serviceType);
+				var srv = (Places.IPlace) Activator.CreateInstance(serviceType);
 
-				await srv.EnterLocation(c, loc.Services[serviceName]);
+				await srv.EnterLocation(c, loc.Places[placeName]);
 			}
 		}
 	}

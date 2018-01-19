@@ -2,7 +2,7 @@
 
 namespace SongBot.Rpg.DataClasses
 {
-	public class ServiceLocation
+	public class Place
 	{
 		public string Name { get; set; }
 		public string ServiceImpl { get; set; }

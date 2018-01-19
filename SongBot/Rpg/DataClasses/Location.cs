@@ -1,4 +1,6 @@
-﻿namespace SongBot.Rpg.DataClasses
+﻿using SongBot.Rpg.Inventory;
+
+namespace SongBot.Rpg.DataClasses
 {
 	using System.Collections.Generic;
 	using System.Linq;
@@ -12,11 +14,12 @@
 		public string Description { get; set; }
 		public string Hostility { get; set; }
 		public List<string> LocationConnections { get; set; }
-		public Dictionary<string, ServiceLocation> Services { get; set; }
+		public Dictionary<string, Place> Places { get; set; }
+		public List<Item> Items { get; set; }
 
 		public Location()
 		{
-			Services = new Dictionary<string, ServiceLocation>(System.StringComparer.OrdinalIgnoreCase);
+			Places = new Dictionary<string, Place>(System.StringComparer.OrdinalIgnoreCase);
 		}
 
 		public DiscordEmbed GetLocationEmbed()
@@ -36,18 +39,18 @@
 				case "sanctuary": builder.WithColor(DiscordColor.Gold); break;
 				case "friendly": builder.WithColor(DiscordColor.SpringGreen); break;
 				case "neutral": builder.WithColor(DiscordColor.CornflowerBlue); break;
-				case "dangerous": builder.WithColor(DiscordColor.Orange); break;
-				case "hostile": builder.WithColor(DiscordColor.IndianRed); break;
+				case "caution": builder.WithColor(DiscordColor.Orange); break;
+				case "dangerous": builder.WithColor(DiscordColor.IndianRed); break;
+				case "hostile": builder.WithColor(DiscordColor.Red); break;
 				default: builder.WithColor(DiscordColor.White); break;
 			}
 
-
 			// Services
-			if (Services.Count > 0)
+			if (Places.Count > 0)
 			{
 				desc.AppendLine();
-				desc.AppendLine("**Services**");
-				desc.AppendLine(string.Join(", ", Services.Keys));
+				desc.AppendLine("**Places**");
+				desc.AppendLine(string.Join(", ", Places.Keys));
 
 				footer.Append(", .enter <name>");
 			}

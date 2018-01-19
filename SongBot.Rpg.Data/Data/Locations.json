@@ -5,7 +5,7 @@
 		"Description": "Our trusty home",
 		"Hostility": "Sanctuary",
 		"LocationConnections": [ "Firelink" ],
-		"Services": {
+		"Places": {
 			"BeerOfTheShadows": {
 				"Name": "Beer of Shadows",
 				"ServiceImpl": "Inn",
@@ -16,20 +16,41 @@
 				"ServiceImpl": "Inn",
 				"Actions": [ "Beer" ]
 			}
-		}
+		},
+		"Items": [
+			{
+				"Id": "BlankItem",
+				"SpotDifficulty": 0
+			}
+		]
 	},
 	{
 		"LocationId": "Firelink",
 		"DisplayName": "Firelink",
 		"Description": "A dusty road that leads to the settlement of Firelink",
-		"Hostility": "Dangerous",
+		"Hostility": "Friendly",
 		"LocationConnections": [ "SongHq" ],
-		"Services": {
+		"Places": {
 			"Inn": {
 				"Name": "The Bonfire",
 				"ServiceImpl": "Inn",
 				"Actions": [ "Rest" ]
 			}
 		}
+	},
+
+	{
+		"LocationId": "Arkham",
+		"DisplayName": "Arkham",
+		"Description": "Soon",
+		"Hostility": "caution",
+		"LocationConnections": [ "MiskatonicUniversity" ]
+	},
+	{
+		"LocationId": "MiskatonicUniversity",
+		"DisplayName": "Miskatonic University",
+		"Description": "Soon",
+		"Hostility": "dangerous",
+		"LocationConnections": [ "Arkham" ]
 	}
 ]

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SongBot.Rpg.LocationServices
+namespace SongBot.Rpg.Places
 {
 	using System;
 	using System.Threading.Tasks;
@@ -11,15 +11,15 @@ namespace SongBot.Rpg.LocationServices
 
 	using DataClasses;
 
-	public class InnService : ILocationService
+	public class InnService : IPlace
 	{
-		public async Task EnterLocation(CommandContext c, ServiceLocation loc)
+		public async Task EnterLocation(CommandContext c, Place loc)
 		{
 			var desc = new System.Text.StringBuilder();
 
 			foreach (var act in loc.Actions)
 			{
-				var sla = ContentManager.ServiceLocationActions[act];
+				var sla = ContentManager.PlaceActions[act];
 				desc.AppendLine(sla.Description);
 			}
 
@@ -31,7 +31,7 @@ namespace SongBot.Rpg.LocationServices
 
 			foreach (var act in loc.Actions)
 			{
-				var sla = ContentManager.ServiceLocationActions[act];
+				var sla = ContentManager.PlaceActions[act];
 				await msg.CreateReactionAsync(DiscordEmoji.FromName(c.Client, sla.ReactionIcon));
 			}
 
@@ -58,7 +58,7 @@ namespace SongBot.Rpg.LocationServices
 
 			foreach (var act in loc.Actions)
 			{
-				var sla = ContentManager.ServiceLocationActions[act];
+				var sla = ContentManager.PlaceActions[act];
 
 				if (sla.ReactionIcon == responseName)
 				{

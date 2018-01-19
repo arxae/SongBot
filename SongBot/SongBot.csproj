@@ -84,20 +84,21 @@
     <Compile Include="Rpg\Commands\ListCommands.cs" />
     <Compile Include="Rpg\Commands\LocationCommands.cs" />
     <Compile Include="Rpg\Commands\RpgGameCommands.cs" />
+    <Compile Include="Rpg\Commands\SkillCommands.cs" />
     <Compile Include="Rpg\ContentManager.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rpg\DataClasses\CharClass.cs" />
     <Compile Include="Rpg\DataClasses\GameConfig.cs" />
-    <Compile Include="Rpg\DataClasses\Item.cs" />
+    <Compile Include="Rpg\Inventory\Item.cs" />
     <Compile Include="Rpg\DataClasses\Location.cs" />
     <Compile Include="Rpg\DataClasses\Race.cs" />
-    <Compile Include="Rpg\DataClasses\ServiceLocation.cs" />
-    <Compile Include="Rpg\DataClasses\ServiceLocationAction.cs" />
-    <Compile Include="Rpg\LocationServices\ILocationService.cs" />
-    <Compile Include="Rpg\LocationServices\InnService.cs" />
-    <Compile Include="Rpg\LocationServices\ShopService.cs" />
+    <Compile Include="Rpg\DataClasses\Place.cs" />
+    <Compile Include="Rpg\DataClasses\PlaceAction.cs" />
+    <Compile Include="Rpg\Places\IPlace.cs" />
+    <Compile Include="Rpg\Places\InnService.cs" />
+    <Compile Include="Rpg\Places\ShopService.cs" />
     <Compile Include="Rpg\Player.cs" />
   </ItemGroup>
   <ItemGroup>

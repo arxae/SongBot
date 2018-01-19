@@ -1,3 +1,7 @@
-{
-	
-}
+[
+	{
+		"Id": "BlankItem",
+		"Name": "Blank Item", 
+		"Description": "A blank item that doesn't do anything"
+	}
+]
