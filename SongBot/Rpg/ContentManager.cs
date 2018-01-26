@@ -14,6 +14,7 @@
 	{
 		public const string DB_NAME = "songbot.app.db";
 		public const string DB_PLAYER_TABLE = "players";
+		public const string DB_LOCINV_TABLE = "location_inventory";
 
 		public const string EMOJI_GREEN_CHECK = ":white_check_mark:";
 		public const string EMOJI_BLACK_CHECK = ":heavy_check_mark:";

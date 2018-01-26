@@ -1,7 +1,17 @@
 [
 	{
 		"Id": "BlankItem",
-		"Name": "Blank Item", 
+		"Name": "Blank Item",
 		"Description": "A blank item that doesn't do anything"
+	},
+	{
+		"Id": "RedItem",
+		"Name": "Red Item",
+		"Description": "A red item that doesn't do anything"
+	},
+	{
+		"Id": "GreenItem",
+		"Name": "Green Item",
+		"Description": "A green item that doesn't do anything"
 	}
 ]

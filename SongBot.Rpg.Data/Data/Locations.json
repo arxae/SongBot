@@ -21,6 +21,14 @@
 			{
 				"Id": "BlankItem",
 				"SpotDifficulty": 0
+			},
+			{
+				"Id": "GreenItem",
+				"SpotDifficulty": 10
+			},
+			{
+				"Id": "RedItem",
+				"SpotDifficulty": 80
 			}
 		]
 	},

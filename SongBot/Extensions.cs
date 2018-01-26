@@ -7,6 +7,7 @@
 	using DSharpPlus.Entities;
 
 	using Rpg;
+	using Rpg.DataClasses;
 
 	public static class Extensions
 	{
@@ -65,6 +66,7 @@
 		// DB Stuff
 		public static string GetFullUsername(this DiscordUser user) => $"{user.Username}#{user.Discriminator}";
 		public static LiteDB.LiteCollection<Player> GetPlayerTable(this LiteDB.LiteDatabase db) => db.GetCollection<Player>(ContentManager.DB_PLAYER_TABLE);
+		public static LiteDB.LiteCollection<LocationInventory> GetLocationInventoryTable(this LiteDB.LiteDatabase db) => db.GetCollection<LocationInventory>(ContentManager.DB_LOCINV_TABLE);
 
 		public static Player GetPlayer(this LiteDB.LiteDatabase db, ulong playerId)
 		{
