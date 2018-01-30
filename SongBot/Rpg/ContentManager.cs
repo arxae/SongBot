@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Timers;
 	using System.IO;
 	using System.Linq;
 
@@ -33,8 +34,11 @@
 		public static Dictionary<string, PlaceAction> PlaceActions { get; private set; }
 		public static Dictionary<string, Type> PlaceActionImplementations { get; private set; }
 		public static Dictionary<string, Item> Items { get; private set; }
+		public static Dictionary<string, PlayerAction> PlayerActions { get; private set; }
 
 		public static LiteDB.LiteDatabase GetDb() => new LiteDB.LiteDatabase(DB_NAME);
+
+		public static Timer TickTimer;
 
 		public static void Initialize()
 		{
@@ -81,6 +85,13 @@
 			foreach (var loc in _locations) { Locations.Add(loc.LocationId, loc); }
 			Console.Write($"...Locations({_locations.Count})");
 
+			// ----- Player Actions
+			PlayerActions = new Dictionary<string, PlayerAction>(StringComparer.OrdinalIgnoreCase);
+			var playerActJson = File.ReadAllText("Data/PlayerActions.json");
+			var _playerActs = _JSON.DeserializeObject<List<PlayerAction>>(playerActJson);
+			foreach(var act in _playerActs) { PlayerActions.Add(act.Id, act); }
+			Console.Write($"...PlayerActions({_playerActs.Count})");
+
 			// ----- Items
 			Items = new Dictionary<string, Item>(StringComparer.OrdinalIgnoreCase);
 			var itemsJson = File.ReadAllText("Data/Items.json");
@@ -94,6 +105,15 @@
 
 			sw.Stop();
 			Console.WriteLine($"...Done in {sw.Elapsed}.");
+
+			TickTimer = new Timer(Config.TickIntervalMs);
+			TickTimer.Elapsed += TickTimer_Elapsed;
+			Console.WriteLine($"Tick Timer started with {TickTimer.Interval}ms interval...");
+		}
+
+		private static void TickTimer_Elapsed(object sender, ElapsedEventArgs e)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

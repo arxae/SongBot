@@ -3,5 +3,6 @@
 	"StartingClass": "Novice",
 	"SongDiscordGuildId": 397948435162071040,
 	"RpgChannel": "rpg",
-	"NeverDmResults": false
+	"NeverDmResults": false,
+	"TickIntervalMs": 60000
 }

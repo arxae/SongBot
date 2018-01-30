@@ -1,0 +1,13 @@
+[
+	{
+		"Id": "idle",
+		"Name": "Idle",
+		"Description": "Just hanging around",
+		"ReqTicks": -1
+	},
+	{
+		"Id": "skill:perception",
+		"Name": "Perception",
+		"Description": "You take a good long look at your surroundings"
+	}
+]

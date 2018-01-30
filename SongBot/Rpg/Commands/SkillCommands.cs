@@ -5,7 +5,7 @@
 
 	using DSharpPlus.CommandsNext;
 	using DSharpPlus.CommandsNext.Attributes;
-	using DSharpPlus.Entities;
+	using LiteDB;
 
 	[Group("skill")]
 	public class SkillCommands
@@ -26,27 +26,18 @@
 					return;
 				}
 
-				var loc = ContentManager.Locations[player.CurrentLocation];
-
-				var roll = ContentManager.Rng.Next(0, 100);
-				var foundItems = loc.Items.Where(i => i.SpotDifficulty < roll).ToList();
-
-				var foundItemEmbed = new DiscordEmbedBuilder()
-					.WithTitle("You spot the following items")
-					.WithColor(DiscordColor.Black)
-					.WithFooter("Respond with item number to inspect");
-
-				var sb = new System.Text.StringBuilder();
-				for (int i = 0; i < foundItems.Count; i++)
+				var skillResult = player.SetSkillAction("perception", new System.Collections.Generic.Dictionary<string, object>
 				{
-					// Get actual items
-					var actItem = ContentManager.Items[foundItems[i].Id];
-					sb.AppendLine($"[{i}] {actItem.Name}");
+					{"locationid",player.CurrentLocation }
+				});
+
+				if (skillResult == false)
+				{
+					await c.RejectMessage();
+					return;
 				}
 
-				foundItemEmbed.WithDescription(sb.ToString());
-
-				await c.RespondAsync(embed: foundItemEmbed);
+				db.GetPlayerTable().Update(player);
 			}
 		}
 	}

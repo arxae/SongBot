@@ -68,10 +68,16 @@
 		public static LiteDB.LiteCollection<Player> GetPlayerTable(this LiteDB.LiteDatabase db) => db.GetCollection<Player>(ContentManager.DB_PLAYER_TABLE);
 		public static LiteDB.LiteCollection<LocationInventory> GetLocationInventoryTable(this LiteDB.LiteDatabase db) => db.GetCollection<LocationInventory>(ContentManager.DB_LOCINV_TABLE);
 
-		public static Player GetPlayer(this LiteDB.LiteDatabase db, ulong playerId)
+		public static Player GetPlayer(this LiteDB.LiteDatabase db, ulong playerId, bool warnOnNull = true)
 		{
 			var playerTable = db.GetPlayerTable();
 			return playerTable.FindOne(p => p.DiscordId == playerId);
+		}
+
+		public static LocationInventory GetLocationInventory(this LiteDB.LiteDatabase db, string locName)
+		{
+			var locTable = db.GetLocationInventoryTable();
+			return locTable.FindOne(l => l.LocationName == locName);
 		}
 	}
 }

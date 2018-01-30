@@ -6,5 +6,6 @@
 	{
 		public string LocationName { get; set; }
 		public List<string> ItemIds { get; set; }
+		public int DecayTimer { get; set; }
 	}
 }

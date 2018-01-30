@@ -92,6 +92,7 @@
     <Compile Include="Rpg\DataClasses\CharClass.cs" />
     <Compile Include="Rpg\DataClasses\GameConfig.cs" />
     <Compile Include="Rpg\DataClasses\LocationInventory.cs" />
+    <Compile Include="Rpg\DataClasses\PlayerAction.cs" />
     <Compile Include="Rpg\Inventory\Item.cs" />
     <Compile Include="Rpg\DataClasses\Location.cs" />
     <Compile Include="Rpg\DataClasses\Race.cs" />

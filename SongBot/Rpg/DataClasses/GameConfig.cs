@@ -7,5 +7,6 @@
 		public ulong SongDiscordGuildId { get; set; }
 		public string RpgChannel { get; set; }
 		public bool NeverDmResults { get; set; }
+		public double TickIntervalMs { get; set; }
 	}
 }
